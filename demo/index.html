@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BiliClassic Web Player</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #000;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #player {
+      width: min(96vw, 960px);
+      height: min(54vw, 540px);
+      background: #000;
+    }
+    #player ruffle-player {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
+  <script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+      autoplay: "on",
+      unmuteOverlay: "hidden",
+      splashScreen: false,
+      letterbox: "on",
+      allowScriptAccess: "always",
+      logLevel: "info",
+      fontSources: ["/demo/fonts/simhei.ttf"],
+      defaultFonts: {
+        sans: ["SimHei", "Microsoft YaHei", "SimSun"],
+        serif: ["SimHei", "SimSun"],
+        typewriter: ["SimHei"]
+      }
+    };
+    window._debugPlayer = function (msg) {
+      console.log("[bili2012]", msg);
+    };
+    window.callNextPart = function () {};
+    window.CallPlayerAction = function () {};
+    window.heimu = function () {};
+    window.loadco = function () {};
+    window.player_fullwin = function () {};
+    window.player_widewin = function () {};
+    window._playerDebug = function () {};
+    window._deubgPlayer = function () {};
+  </script>
+  <script src="/demo/ruffle/ruffle.js"></script>
+</head>
+<body>
+  <div id="player"></div>
+  <script>
+    window.addEventListener("load", function () {
+      var params = new URLSearchParams(window.location.search);
+      var swf = params.get("swf") || "/demo/patched/play.2012.swf?v=7";
+      var file = params.get("file") || "/media/video.mp4";
+      var ruffle = window.RufflePlayer.newest();
+      var player = ruffle.createPlayer();
+      document.getElementById("player").appendChild(player);
+      player.load({
+        url: swf,
+        parameters: {
+          file: file,
+          id: "39824328708",
+          aid: "116895554473263",
+          as_wide: "1",
+          autostart: "true",
+          autoplay: "1"
+        }
+      });
+    });
+  </script>
+</body>
+</html>

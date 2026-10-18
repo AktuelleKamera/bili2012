@@ -1,0 +1,14 @@
+node_modules/
+demo/node_modules/
+.login-sessions.json
+.login-sessions.enc
+.session-key
+demo/.login-sessions.json
+demo/.login-sessions.enc
+demo/.session-key
+*.log
+*.stackdump
+.DS_Store
+Thumbs.db
+
+demo/patched/*.before-*

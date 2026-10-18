@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="/video-page/assets/qzone_share.css?v=3" />
+</head>
+<body>
+<div class="qz_share_icon qz_share_icon_16">
+  <a class="bt_icon" id="qzoneBtn" href="#" target="_blank" title="分享到QQ空间"><span>分享</span></a>
+  <strong class="counts counts_white_16" id="countPanel"><span class="i_left"></span><span class="i_right"><span class="counts_nums" id="count">0</span></span></strong>
+</div>
+<script>
+function getParam(name) {
+  var match = location.search.match(new RegExp("[?&]" + name + "=([^&]*)"));
+  return match ? decodeURIComponent(match[1]) : "";
+}
+var url = getParam("url") || location.href;
+var title = getParam("title") || "";
+document.getElementById("qzoneBtn").href =
+  "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=" +
+  encodeURIComponent(url) +
+  "&title=" +
+  encodeURIComponent(title);
+</script>
+</body>
+</html>

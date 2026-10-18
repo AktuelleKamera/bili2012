@@ -1,0 +1,39 @@
+﻿.qz_open_share_icon_widget_start{display:none}
+ body{padding:0;margin:0}
+.bt span{position:absolute;top:-999em}
+.bt,.counts{float:left}
+.counts{margin-left:3px}
+.counts span{background-repeat:no-repeat}
+.counts .i_left{width:6px;height:21px;background-position:top left;float:left}
+.counts .i_right{height:21px;background-position:top right;float:left}
+.counts_nums{padding:0 5px;font-size:12px;font-family:sisum;font-weight:400}
+.counts_blue_32 .i_left,.counts_blue_32 .i_right,.counts_white_32 .i_left,.counts_white_32 .i_right{height:32px;line-height:32px}
+.counts_blue_32 .i_left{background-image:url(/video-page/assets/qzone_sprite.png);background-position:0 0}
+.counts_blue_32 .i_right{background-image:url(img/open/open_counts_blue_r_32.gif?max_age=19830211&d=0213145612);color:#fff}
+.counts_white_32 .i_left{background-image:url(/video-page/assets/qzone_sprite.png);background-position:-7px 0}
+.counts_white_32 .i_right{background-image:url(img/open/open_counts_white_r_32.gif?max_age=19830211&d=0213145612);color:#3b8cbb}
+.counts_blue_24 .i_left,.counts_blue_24 .i_right,.counts_white_24 .i_left,.counts_white_24 .i_right{height:24px;line-height:24px}
+.counts_blue_24 .i_left{background-image:url(/video-page/assets/qzone_sprite.png);background-position:0 -33px}
+.counts_blue_24 .i_right{background-image:url(img/open/open_counts_blue_r_24.gif?max_age=19830211&d=0213145612);color:#fff}
+.counts_white_24 .i_left{background-image:url(/video-page/assets/qzone_sprite.png);background-position:-7px -33px}
+.counts_white_24 .i_right{background-image:url(img/open/open_counts_white_r_24.gif?max_age=19830211&d=0213145612);color:#3b8cbb}
+.counts_blue_21 .i_left,.counts_blue_21 .i_right,.counts_white_21 .i_left,.counts_white_21 .i_right{height:21px;line-height:21px}
+.counts_blue_21 .i_left{background-image:url(/video-page/assets/qzone_sprite.png);background-position:-39px -33px}
+.counts_blue_21 .i_right{background-image:url(img/open/open_counts_blue_r_21.gif?max_age=19830211&d=0213145612);color:#fff}
+.counts_white_21 .i_left{background-image:url(/video-page/assets/qzone_sprite.png);background-position:-46px -33px}
+.counts_white_21 .i_right{background-image:url(img/open/open_counts_white_r_21.gif?max_age=19830211&d=0213145612);color:#3b8cbb}
+.counts_blue_16 .counts_nums,.counts_white_16 .counts_nums{font-size:11px}
+.counts_blue_16 .i_left,.counts_blue_16 .i_right,.counts_white_16 .i_left,.counts_white_16 .i_right{height:16px;line-height:16px}
+.counts_blue_16 .i_left{background-image:url(/video-page/assets/qzone_sprite.png);background-position:-53px 0}
+.counts_blue_16 .i_right{background-image:url(img/open/open_counts_blue_r_16.gif?max_age=19830211&d=0213145612);color:#fff}
+.counts_white_16 .i_left{background-image:url(/video-page/assets/qzone_sprite.png);background-position:-53px -17px}
+.counts_white_16 .i_right{background-image:url(/video-page/assets/qzone_counts.gif);color:#3b8cbb}
+.qz_share_icon{background-repeat:no-repeat;display:block}
+.qz_share_icon .bt_icon span{position:absolute!important;clip:rect(1px 1px1px1px);clip:rect(1px,1px,1px,1px);padding:0!important;border:0!important;height:1px!important;width:1px!important;overflow:hidden}
+.qz_share_icon .bt_icon,.qz_share_icon .counts{float:left}
+.qz_share_icon_32 .bt_icon{background-image:url(/video-page/assets/qzone_sprite.png);background-position:-14px 0;width:32px;height:32px}
+.qz_share_icon_24 .bt_icon{background-image:url(/video-page/assets/qzone_sprite.png);background-position:-14px -33px;width:24px;height:24px}
+.qz_share_icon_16 .bt_icon{background-image:url(/video-page/assets/qzone_sprite.png);background-position:-53px -34px;width:16px;height:16px}
+.qz_open_share_icon_widget_end{display:none}
+/*! CssGaga 0213145612 *//*  |xGv00|c32efd10f2758438e72936140f478708 */
+.counts_nums{font-family:Arial,"宋体",sans-serif;font-size:11px;line-height:16px;color:#3b8cbb;}

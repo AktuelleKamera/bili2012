@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{{TITLE}}</title>
+<link href="/space/assets/public.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.space-hint{display:block;padding:8px 0;color:#999;font-size:12px;}
+.mini-tx{min-height:30px;}
+.main_list ul li .q{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.uname img{vertical-align:middle;margin-left:5px;}
+.space-verify-icon{vertical-align:middle;margin-left:5px;border:0;}
+.space-error{padding:20px 10px;color:#e53935;list-style:none;font-size:13px;}
+.space-note{padding:8px 10px;color:#e67e22;font-size:12px;background:#fffaf0;border:1px solid #f5e0b5;margin-bottom:8px;}
+.space-note a{margin-left:10px;color:#00a1d6;}
+.space-error a{margin-left:8px;color:#00a1d6;}
+</style>
+</head>
+<body>
+<div class="z">
+<p class="my-uid" style="display:none;"></p>
+<p class="h-mid" style="display:none;">{{MID}}</p>
+	<div class="header">
+    	<div class="spname">{{NAME}}的空间</div>
+    </div>
+	<div class="num">
+        <a href="/space/{{MID}}" class="on" id="num_video">视频</a><a href="javascript:void(0)" id="num_arclist">日志</a><a href="/space/{{MID}}/info" id="num_info">个人资料</a><a href="javascript:void(0)" id="num_message">留言板</a><a href="javascript:void(0)" id="num_follow">TA的关注</a><a href="javascript:void(0)" id="num_fans">TA的粉丝</a>
+    </div>
+    <div class="smallbox">
+    	<div class="facebox"><img src="{{FACE}}" alt="{{NAME}}" onerror="this.src='/space/assets/noface.gif'" /></div>
+        <div class="s_box">
+        	<p class="verify" style="display:none;">{{VERIFY}}</p>
+        	<h4 class="uname">{{NAME}}{{OFFICIAL_BADGE}}</h4>
+            <div class="verinfobox" style="{{VERIFY_STYLE}}">
+            <b>哔哩哔哩认证资料</b>
+            <p>{{OFFICIAL_TITLE}}</p>
+            </div>
+            <ul class="s_link" id="s_link">
+            	<li class="s_msg button"><a href="https://message.bilibili.com/#/whisper/mid{{MID}}" target="_blank" class="seedmsg">发送消息</a></li>
+                <li class="s_friend button"><a class="addfs" href="https://space.bilibili.com/{{MID}}" target="_blank" title="关注 {{NAME}}">关注Ta</a></li>
+            </ul>
+            <ul class="info_list" id="s_info">
+            	<li id="u-rank">会员等级：{{LEVEL}}</li>
+                <li>粉丝：{{FANS}}</li>
+                <li>关注：{{FOLLOWING}}</li>
+            </ul>
+        </div>
+        <div id="h-f" class="n_box">
+            <div class="ceTitle"><a href="javascript:void(0)">这些人关注了Ta</a><span class="f-r">({{FANS}})</span></div>
+            <div class="mini-tx"><span class="space-hint">—</span></div>
+        </div>
+        <div id="f-h" class="n_box">
+            <div class="ceTitle"><a href="javascript:void(0)">Ta关注了这些人</a><span class="f-r">({{FOLLOWING}})</span></div>
+            <div class="mini-tx"><span class="space-hint">—</span></div>
+        </div>
+    </div>
+    <div class="largebox">
+    	<div class="main_list">
+            {{VIDEO_NOTE}}
+        	<ul>
+{{VIDEOS}}
+			</ul>
+        </div>
+        <ul class="page">{{PAGER}}</ul>
+    </div>
+</div>
+</body>
+</html>

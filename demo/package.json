@@ -1,0 +1,12 @@
+{
+  "name": "biliclassic-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "iconv-lite": "^0.7.3",
+    "qrcode": "^1.5.4"
+  }
+}

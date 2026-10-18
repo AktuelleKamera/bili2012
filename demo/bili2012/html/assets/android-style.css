@@ -1,0 +1,88 @@
+.pzz {
+  background-image: url("/html/assets/android_bg.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+  border-radius: 10px;
+  margin-left: 5px;
+  width: 970px;
+}
+.weibobox{
+    position: absolute;
+    bottom: 0;
+	width: 980px;
+}
+.container {
+  background-image: url("/html/assets/android_2233.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+  width: 970px;
+  height: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  position: relative;
+}
+.container .link-container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 160px;
+  width: 254px;
+  height: 90px;
+}
+.container .link-container .download-link {
+  display: inline-block;
+  width: 254px;
+  height: 89px;
+  text-indent: -9999em;
+  background-image: url("/html/assets/android_dl.png");
+  background-repeat: no-repeat;
+}
+.container .link-container .download-link:hover, .container .link-container .download-link:focus {
+  background-image: url("/html/assets/android_dl2.png");
+}
+.container .device-logo {
+  background-image: url("/html/assets/android_logo.png");
+  background-repeat: no-repeat;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  width: 263px;
+  height: 231px;
+}
+.container .preview-imgs {
+  background-color: #E6E6E6;
+  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 320px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 55px;
+  padding-right: 25px;
+  position: absolute;
+  border-radius: 10px;
+  left: 0px;
+  top: 535px;
+}
+.container .preview-imgs ul {
+  height: 320px;
+  width: 900px;
+  padding: 0px;
+  margin: 0px;
+  overflow: auto;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+.container .preview-imgs ul li {
+  background-color: #a4c639;
+  list-style: none;
+  display: inline-block;
+  padding: 0px;
+  margin: 0px;
+  margin-right: 35px;
+}
+.container .preview-imgs ul li img {
+  height: 320px;
+  border: 0px solid black;
+}

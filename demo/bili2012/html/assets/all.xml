@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <config>
+    <frameDefaultColor>#666666</frameDefaultColor>
+    <frameActiveColor>#FF9900</frameActiveColor>
+    <textcolor>#000000</textcolor>
+    <defaultShape>1</defaultShape>
+    <solidShape>1</solidShape>
+  </config>
+  <record>
+    <shortname>荼荼丸</shortname>
+    <name><![CDATA[荼荼丸]]></name>
+    <image>/html/assets/cele/221.jpg</image>
+    <link><![CDATA[http://you.video.sina.com.cn/nekomimi]]></link>
+    <online>0</online>
+    <intro><![CDATA[又称221,双子职人,姐弟均属萌娘属性。另,弟弟凹胸瞩目(自称帅哥)。技能：PSP移植术、音频调教术、视频剪辑术、洗脑术。(弟弟:这是帅哥才会的技能![姐姐Pai飞~])  天赋：万物皆可鬼畜(99/99)。]]></intro>
+  </record>
+  <record>
+    <shortname>叫兽小星</shortname>
+    <name><![CDATA[叫兽小星]]></name>
+    <image>/html/assets/cele/jiaoshou.jpg</image>
+    <link><![CDATA[http://www.tudou.com/home/yzx119/]]></link>
+    <online>0</online>
+    <intro><![CDATA[ 叫兽小星,英文名:show jiao                  　 长年盘踞在土豆网排行榜前五的猥琐男青年,他的恶搞视频风靡一时。　　　　　天赋：kuso(99/99)]]></intro>
+  </record>
+  <record>
+    <shortname>失明少女</shortname>
+    <name><![CDATA[失明少女]]></name>
+    <image>/html/assets/cele/smmm.jpg</image>
+    <link><![CDATA[http://you.video.sina.com.cn/vlist/1541676360.html]]></link>
+    <online>0</online>
+    <intro><![CDATA[以初音为主的VOCALOID2高级调教师。日语上手，之强力甚至可以让miku酱唱周董的歌..            技能：调教术(99/99)    天赋：语言精通(9/9)]]></intro>
+  </record>
+  <record>
+    <shortname>beijizhu</shortname>
+    <name><![CDATA[beijizhu]]></name>
+    <image>/html/assets/cele/beijuzhu.jpg</image>
+    <link><![CDATA[http://bilibili.us//member/index.php?uid=beijizhu]]></link>
+    <online>0</online>
+    <intro><![CDATA[本名"悲剧猪"，和NINI是百合关系，两人互相磨豆腐已久，本体是一只长着很多触手的章鱼。                               　　　　　  被动技能：厄运女神的眷恋(9/9)                  天赋：口糊(99/99)]]></intro>
+  </record>
+  <record>
+    <shortname>Hank</shortname>
+    <name><![CDATA[Hank]]></name>
+    <image>/html/assets/cele/noface.gif</image>
+    <link><![CDATA[/member/index.php?uid=hank]]></link>
+    <online>0</online>
+    <intro><![CDATA[挖坑王Hank，很难得自己会掉坑里去，一般都是挖了害人。近期又客串了美剧hero第4季第⑨集中的杯具路人。              天赋：挖坑(99/99)     填坑(9/99)]]></intro>
+  </record>
+  <record>
+    <shortname>NINI</shortname>
+    <name><![CDATA[NINI]]></name>
+    <image>/html/assets/cele/noface.gif</image>
+    <link><![CDATA[/member/index.php?uid=dajizhe1945]]></link>
+    <online>0</online>
+    <intro><![CDATA[传说中的高玩NINI，出现过的地方无不让群众惊叹：“NINI神操作，NINI好技术。。”等等评价，而偶尔的小失误更添加了NINI的萌度.　　　　　　　　　　天赋：高玩(99/99)　　天然呆(9/99)]]></intro>
+  </record>
+  <record>
+    <shortname>新大陆视听文化研究部</shortname>
+    <name><![CDATA[新大陆视听文化研究部]]></name>
+    <image>/html/assets/cele/newdl.jpg</image>
+    <link><![CDATA[http://www.o2nepo.cn]]></link>
+    <online>1</online>
+    <intro><![CDATA[邪恶的研究组织，研究现代视听的一切技术，组内成员佩戴的战斗力探测器能发现任何能量强大的视频，加以剖析并转化成为自己的战斗组件。以娱乐众人为主，研究技术为辅。
+技能：鬼畜斩；变调波；3D百裂砍；腐画之气息；
+天赋：歌姬的忧伤；15岁少年的坑；UP主的撒鼻息]]></intro>
+  </record>
+  <record>
+    <shortname>捂脸姬</shortname>
+    <name><![CDATA[捂脸姬]]></name>
+    <image>/html/assets/cele/noface.gif</image>
+    <link><![CDATA[member/index.php?uid=捂脸姬]]></link>
+    <online>1</online>
+    <intro><![CDATA[传说中ACP接手人，怪物猎人高端职业玩家，被人称作⑤，由于自身觉得存在感过低经常性格乱变，因为和天然呆天赋∞的⑨相似，所以又被称为⑤]]></intro>
+  </record>
+  <record>
+    <shortname>AUER</shortname>
+    <name><![CDATA[AUER]]></name>
+    <image>/html/assets/cele/AUER.jpg</image>
+    <link><![CDATA[http://hi.baidu.com/%B0%A1%D2%F9/home]]></link>
+    <online>1</online>
+    <intro><![CDATA[33号bilibili娘形象设计者,工口本天王,腐女,百合,软妹子]]></intro>
+  </record>
+  <record>
+    <shortname>ハオ</shortname>
+    <name><![CDATA[ハオ]]></name>
+    <image>/html/assets/cele/bac.jpg</image>
+    <link><![CDATA[http://hi.baidu.com/patinnko/]]></link>
+    <online>1</online>
+    <intro><![CDATA[22号bilibili娘形象设计者...是个喜欢胡言乱语的人，高端的职业玩家、宅男、伪娘、萝莉控、圣人、宅绘师、火星、鄙视左拥右抱的、贤者、H工口！...]]></intro>
+  </record>
+
+  <record>
+    <shortname>疾风之龙</shortname>
+    <name><![CDATA[疾风之龙]]></name>
+    <image>/html/assets/cele/noface.gif</image>
+    <link><![CDATA[http://bilibili.us//member/index.php?uid=cxfpsk]]></link>
+    <online>0</online>
+    <intro><![CDATA[据称是好几起大规模洗脑事件的罪魁祸首。东方PROJECT爱好者，希望有朝一日能再次到幻想乡一游。
+   能力：制作鬼畜视频程度的能力。]]></intro>
+  </record>
+
+  <record>
+    <shortname>平安夜的噩梦</shortname>
+    <name><![CDATA[平安夜的噩梦]]></name>
+    <image>/html/assets/cele/payem.gif</image>
+    <link><![CDATA[http://blog.sina.com.cn/animoogle]]></link>
+    <online>0</online>
+    <intro><![CDATA[百合星人,VOCALOID-pv爱好者,有着收集全粘土系列的野望但是基本买不起,最大的梦想是有一天能成为米人然后彻底的宅下去 =ω= 
+  能力:拥有简单使用3DMAX程度的能力]]></intro>
+  </record>
+</root>

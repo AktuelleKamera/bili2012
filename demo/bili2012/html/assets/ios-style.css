@@ -1,0 +1,84 @@
+.weibobox{
+    position: absolute;
+    bottom: 0;
+	width: 980px;
+}
+.container {
+  background-image: url("/html/assets/ap_2233.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+  width: 970px;
+  height: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  position: relative;
+}
+.container .link-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+  height: 110px;
+  position: absolute;
+  top: 235px;
+  left: 340px;
+}
+.container .link-container .download-link {
+  display: inline-block;
+  width: 300px;
+  height: 110px;
+  text-indent: -9999em;
+  background-image: url("/html/assets/ap_dl.png");
+  background-repeat: no-repeat;
+}
+.container .link-container .download-link:hover, .container .link-container .download-link:focus {
+  background-image: url("/html/assets/ap_dl2.png");
+}
+.container .device-logo {
+  background-image: url("/html/assets/ap_logo.png");
+  background-repeat: no-repeat;
+  margin-left: auto;
+  margin-right: auto;
+  width: 161px;
+  height: 199px;
+  position: absolute;
+  top: 20px;
+  left: 409.5px;
+}
+.container .preview-imgs {
+  background-color: #e6e6e6;
+  border-radius: 10px;
+  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 320px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+  position: absolute;
+  left: 0px;
+  top: 532px;
+}
+.container .preview-imgs ul {
+  height: 320px;
+  width: 930px;
+  padding: 0px;
+  margin: 0px;
+  overflow: auto;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+.container .preview-imgs ul li {
+  background-color: #808080;
+  list-style: none;
+  display: inline-block;
+  padding: 0px;
+  margin: 0px;
+  margin-right: 5px;
+}
+.container .preview-imgs ul li img {
+  height: 320px;
+  border: 0px solid black;
+}
