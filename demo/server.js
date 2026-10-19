@@ -3365,6 +3365,10 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
+    if (pathname === '/html/help.html') {
+      return serveFile(path.join(DEMO, 'bili2012', 'html', 'help.html'), req, res);
+    }
+
     if (pathname === '/html/cele.html') {
       return serveFile(path.join(DEMO, 'bili2012', 'html', 'cele.html'), req, res);
     }
@@ -3723,8 +3727,8 @@ const server = http.createServer(async (req, res) => {
     if (pathname === '/dm00/msg.xml') {
       const xml =
         '<?xml version="1.0" encoding="UTF-8"?>' +
-          '<msg><item catalog="system" bgcolor="#FFFFFF" tooltip="2012冬新番介绍">' +
-        '<u><font color="#FFFFFF">[2012冬]新番介绍</font></u>' +
+          '<msg><item catalog="system" bgcolor="#FFFFFF" tooltip="2013冬新番介绍">' +
+        '<u><font color="#FFFFFF">[2013冬]新番介绍</font></u>' +
         '</item></msg>';
         res.writeHead(200, {
           'Content-Type': 'text/xml; charset=utf-8',

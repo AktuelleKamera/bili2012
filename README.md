@@ -4,7 +4,7 @@
 
 ## 如何运行本项目？
 
-需要Node.js 18以上版本。
+源码运行需要Node.js 18以上版本。便携版已包含Node运行时，解压后直接双击`start.bat`即可，不需要安装Node.js。
 
 双击`start.bat`，或在`demo`目录执行：
 
@@ -49,6 +49,7 @@ npm start
 - 直接播放器：`/player`
 - 安卓客户端页：`/html/android.html`
 - iOS客户端页：`/html/ios.html`
+- 全站使用说明：`/html/help.html`
 - 名人堂：`/html/cele.html`
 - 补档认领处：`/html/userdel_list.html`
 - Ruffle模式：在2012页面后加`?ruffle=1`
