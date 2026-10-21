@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML5预览 - 哔哩哔哩</title>
+<link rel="stylesheet" href="/player5/player5.css">
+</head>
+<body>
+<div class="p5-page">
+  <div class="p5-root" id="player5">
+    <div class="p5-top">
+      <div class="p5-notice" id="notice"><img class="p5-logo" src="/player5/assets/logo.png" alt="bilibili"><div class="p5-notice-msg" id="noticeMsg"></div></div>
+      <div class="p5-info">
+        <div class="p5-stat p5-stat-a">
+          <div class="p5-stat-row"><img src="/player5/assets/i1.png" alt=""><span>播放:<b id="statView">0</b></span></div>
+          <div class="p5-stat-row"><img src="/player5/assets/i2.png" alt=""><span>收藏:<b id="statFav">0</b></span></div>
+          <div class="p5-stat-row"><img src="/player5/assets/i3.png" alt=""><span>弹幕:<b id="statDm">0</b></span></div>
+        </div>
+        <div class="p5-stat p5-stat-b">
+          <div class="p5-stat-row"><img src="/player5/assets/i4.png" alt=""><span>积分:<b id="statScore">0</b></span></div>
+          <div class="p5-stat-row"><img src="/player5/assets/i5.png" alt=""><span>硬币:<b id="statCoin">0</b></span></div>
+        </div>
+        <div class="p5-clock"><span id="clock">00:00:00</span><span class="p5-clock-meta">当前观众 <b>1</b></span></div>
+        <div class="p5-login" id="loginBox">你尚未登录,请先 <a href="/login">登录</a></div>
+      </div>
+    </div>
+    <div class="p5-main">
+      <div class="p5-left">
+        <div class="p5-stage" id="stage">
+          <video id="video" preload="metadata" playsinline poster="/player5/assets/poster.jpg"></video>
+          <canvas id="danmaku"></canvas>
+          <button class="p5-bigplay" id="bigPlay" type="button" aria-label="播放"></button>
+          <div class="p5-controls" id="controls">
+            <button class="p5-play" id="playBtn" type="button" aria-label="播放"></button>
+            <div class="p5-progress" id="progress">
+              <div class="p5-progress-inner" id="progressInner"></div>
+              <div class="p5-progress-thumb" id="progressThumb"></div>
+            </div>
+            <div class="p5-time" id="timeText">00:00 / 00:00</div>
+            <button class="p5-mute" id="muteBtn" type="button" aria-label="静音"></button>
+            <div class="p5-volume" id="volume"><div class="p5-volume-inner" id="volumeInner"></div><div class="p5-volume-thumb" id="volumeThumb"></div></div>
+            <button class="p5-tool p5-tool-dm" id="dmBtn" type="button" aria-label="弹幕"></button>
+            <button class="p5-tool p5-tool-loop" id="loopBtn" type="button" aria-label="循环"></button>
+            <button class="p5-tool p5-tool-wide" id="wideBtn" type="button" aria-label="宽屏"></button>
+            <button class="p5-tool p5-tool-full" id="fullBtn" type="button" aria-label="全屏"><img src="/player5/assets/fullscreen.png" alt=""></button>
+          </div>
+        </div>
+        <div class="p5-send">
+          <button class="p5-mode" id="modeBtn" type="button"><img src="/player5/assets/mode.png" alt=""><i></i></button>
+          <button class="p5-color" type="button"><img src="/player5/assets/color.png" alt=""></button>
+          <input id="dmInput" type="text" disabled placeholder="该视频已经禁止游客发送弹幕">
+          <button class="p5-sendbtn" type="button">发送<i></i></button>
+        </div>
+      </div>
+      <aside class="p5-side">
+        <div class="p5-taskbar">
+          <div class="p5-tabs">
+            <button class="p5-tab p5-tab-active" type="button"><img src="/player5/assets/list-icon.png" alt="">评论列表</button>
+            <button class="p5-tab" type="button"><img src="/player5/assets/filter.png" alt="">屏蔽设定</button>
+            <button class="p5-tab p5-tab-disabled" type="button"><img src="/player5/assets/i1.png" alt="">高级弹幕</button>
+          </div>
+          <div class="p5-tools">
+            <button type="button" title="相关视频"><img src="/player5/assets/user.png" alt=""></button>
+            <button type="button" title="相关视频"><img src="/player5/assets/av.png" alt=""></button>
+            <button type="button" title="历史弹幕"><img src="/player5/assets/clock.png" alt=""></button>
+            <button class="p5-gear" type="button" title="设置"><img src="/player5/assets/gear.png" alt=""></button>
+            <button type="button" title="显示功能窗口"><img src="/player5/assets/grid.png" alt=""></button>
+          </div>
+        </div>
+        <div class="p5-table">
+          <div class="p5-thead">
+            <div class="p5-col-time">时间</div>
+            <div class="p5-col-text">评论</div>
+            <div class="p5-col-date">发送日期</div>
+            <button class="p5-close" type="button" title="关闭"><img src="/player5/assets/av.png" alt=""><i></i></button>
+          </div>
+          <div class="p5-tbody" id="rowsViewport">
+            <div class="p5-rows" id="rows"></div>
+          </div>
+          <div class="p5-scrollbar" id="scrollbar">
+            <button class="p5-scroll-up" id="scrollUp" type="button"></button>
+            <div class="p5-scroll-track" id="scrollTrack"><div class="p5-scroll-thumb" id="scrollThumb"></div></div>
+            <button class="p5-scroll-down" id="scrollDown" type="button"></button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<script src="/player5/player5.js"></script>
+</body>
+</html>

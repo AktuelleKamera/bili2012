@@ -52,6 +52,17 @@ function getCookie(req, name) {
   return '';
 }
 
+const PLAYER_QN_VALUES = [80, 64, 32, 16];
+
+function getPlayerQn(req) {
+  const qn = parseInt(getCookie(req, 'BCS_PLAYER_QN'), 10);
+  return PLAYER_QN_VALUES.indexOf(qn) >= 0 ? qn : 64;
+}
+
+function getPlayerHtml5(req) {
+  return getCookie(req, 'BCS_PLAYER_HTML5') === '1';
+}
+
 function getLoginSession(req) {
   const sid = getCookie(req, 'BCSESS');
   if (!sid) return null;
@@ -552,10 +563,11 @@ function getRequestCookies(req) {
   return session && session.cookies ? session.cookies : '';
 }
 
-async function getVideoUrl(aid, cid, cookies) {
+async function getVideoUrl(aid, cid, cookies, qn) {
+  qn = PLAYER_QN_VALUES.indexOf(Number(qn)) >= 0 ? Number(qn) : 64;
   const authKey = cookies ? md5Hex(cookies).slice(0, 10) : 'anon';
   const epId = bangumiCidMap.get(String(cid)) || '';
-  const key = aid + ':' + cid + ':' + authKey + (epId ? ':ep' + epId : '');
+  const key = aid + ':' + cid + ':' + authKey + ':' + qn + (epId ? ':ep' + epId : '');
   const cached = videoUrlCache.get(key);
   if (cached && Date.now() < cached.expires) {
     return cached.url;
@@ -569,14 +581,18 @@ async function getVideoUrl(aid, cid, cookies) {
       epId +
       '&cid=' +
       cid +
-      '&qn=64&fnver=0&fourk=1&fnval=0';
+      '&qn=' +
+      qn +
+      '&fnver=0&fourk=1&fnval=0';
   } else {
     api =
       'https://api.bilibili.com/x/player/playurl?avid=' +
       aid +
       '&cid=' +
       cid +
-      '&qn=64&fnver=0&fourk=1&platform=html5&high_quality=1';
+      '&qn=' +
+      qn +
+      '&fnver=0&fourk=1&platform=html5&high_quality=1';
   }
   const resp = await fetch(api, { headers });
   const json = await resp.json();
@@ -2580,7 +2596,7 @@ function getVideoCategory(view) {
   };
 }
 
-function renderPage(aid, cid, info, pageNo) {
+function renderPage(aid, cid, info, pageNo, html5Mode) {
   const view = info.view;
   const owner = view.owner || {};
   const stat = view.stat || {};
@@ -2726,6 +2742,14 @@ function renderPage(aid, cid, info, pageNo) {
       aid +
       '&as_wide=1&autostart=true"'
   );
+  if (html5Mode) {
+    const iframe =
+      '<iframe class="p5-embed" src="/player5?aid=' +
+      encodeURIComponent(aid) +
+      '&embed=1" width="950" height="484" frameborder="0" scrolling="no" allow="fullscreen" allowfullscreen></iframe>';
+    html = html.replace(/<embed\b[\s\S]*?<\/embed>/i, iframe);
+    html = html.replace(/<a class="bili-notice-hit"[\s\S]*?<\/a>/i, '');
+  }
   html = html.replace(
     /<meta itemprop="name" property="media:title" content="[^"]*"/,
     '<meta itemprop="name" property="media:title" content="' + escapeHtml(title) + '"'
@@ -3158,6 +3182,40 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
+    if (pathname === '/api/player5') {
+      const aid = String(new URLSearchParams(search).get('aid') || '').replace(/\D/g, '');
+      if (!aid) {
+        return sendJson(res, 400, { code: -400, message: 'aid无效' });
+      }
+      try {
+        const info = await getVideoInfo(aid, getRequestCookies(req));
+        const view = info.view;
+        const page = (view.pages || [])[0] || {};
+        const cid = String(page.cid || view.cid || '');
+        const qn = getPlayerQn(req);
+        let pic = view.pic || '';
+        try {
+          const picUrl = new URL(pic);
+          pic = '/img/' + picUrl.hostname + picUrl.pathname + picUrl.search;
+        } catch (error) {}
+        return sendJson(res, 200, {
+          code: 0,
+          aid,
+          cid,
+          title: view.title || '',
+          duration: page.duration || view.duration || 0,
+          pic,
+          qn,
+          stat: view.stat || {},
+          owner: view.owner || {},
+          playUrl: cid ? '/media/video/' + aid + '/' + cid + '.mp4?qn=' + qn : '',
+          dmUrl: cid ? '/dm00/dm,' + cid : '',
+        });
+      } catch (error) {
+        return sendJson(res, 502, { code: -1, message: error.message });
+      }
+    }
+
     if (pathname === '/api/fav/folders') {
       const aid = String(new URLSearchParams(search).get('aid') || '').replace(/\D/g, '');
       const session = getLoginSession(req);
@@ -3298,11 +3356,14 @@ const server = http.createServer(async (req, res) => {
       const sid = getCookie(req, 'BCSESS');
       const session = sid ? loginUserSessions.get(sid) : null;
       if (session && session.expires > Date.now()) {
+        const money = await getSessionCoins(session);
         return sendJson(res, 200, {
           login: true,
           uname: session.uname,
           face: session.face,
           mid: session.mid,
+          money,
+          scores: 0,
         });
       }
       if (sid) loginUserSessions.delete(sid);
@@ -3363,6 +3424,28 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(502, { 'Content-Type': 'text/plain; charset=utf-8' });
         return res.end('搜索失败: ' + error.message);
       }
+    }
+
+    if (pathname === '/player5' || pathname === '/player5/') {
+      return serveFile(path.join(DEMO, 'player5', 'index.html'), req, res);
+    }
+
+    if (pathname.startsWith('/player5/')) {
+      const playerRoot = path.join(DEMO, 'player5');
+      const playerFile = path.normalize(path.join(playerRoot, pathname.slice('/player5/'.length)));
+      if (!playerFile.startsWith(playerRoot + path.sep)) {
+        res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+        return res.end('Forbidden');
+      }
+      return serveFile(playerFile, req, res);
+    }
+
+    if (
+      pathname === '/html/settings' ||
+      pathname === '/html/settings/' ||
+      pathname === '/html/settings.html'
+    ) {
+      return serveFile(path.join(DEMO, 'bili2012', 'html', 'settings.html'), req, res);
     }
 
     if (pathname === '/html/help.html') {
@@ -3545,7 +3628,11 @@ const server = http.createServer(async (req, res) => {
         const pages = info.view.pages || [];
         const page = pages[pageNo - 1] || pages[0] || {};
         const cid = String(page.cid || info.view.cid);
-        const html = renderPage(aid, cid, info, pageNo);
+        const html5Mode =
+          search.indexOf('html5') >= 0 ||
+          search.indexOf('=html5') >= 0 ||
+          getPlayerHtml5(req);
+        const html = renderPage(aid, cid, info, pageNo, html5Mode);
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
         return res.end(html);
       } catch (error) {
@@ -3568,12 +3655,17 @@ const server = http.createServer(async (req, res) => {
 
     const videoMatch = pathname.match(/^\/media\/video\/(\d+)\/(\d+)\.mp4$/);
     if (videoMatch) {
-      const target = await getVideoUrl(videoMatch[1], videoMatch[2], getRequestCookies(req));
+      const target = await getVideoUrl(
+        videoMatch[1],
+        videoMatch[2],
+        getRequestCookies(req),
+        getPlayerQn(req)
+      );
       return await pipeFetch(target, req, res);
     }
 
     if (pathname === '/media/video.mp4') {
-      const target = await getVideoUrl(AID, CID, getRequestCookies(req));
+      const target = await getVideoUrl(AID, CID, getRequestCookies(req), getPlayerQn(req));
       return await pipeFetch(target, req, res);
     }
 

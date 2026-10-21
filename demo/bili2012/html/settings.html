@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>播放设置 - 嗶哩嗶哩 - ( ゜- ゜)つロ  乾杯~  - bilibili.tv</title>
+<meta name="description" content="播放设置" />
+<meta name="robots" content="noindex,nofollow" />
+<meta name="keywords" content="弹幕 字幕 AMV MAD MTV GAME ANIME 动漫 动漫音乐 游戏 游戏解说 ACG galgame 动画 动画下载 番组 新番 高清视频 初音 洛天依 vocaloid" />
+<script type="text/javascript" src="/video-page/assets/static.hdslb.com/js/jq.bilibili.js"></script>
+<script type="text/javascript" src="/video-page/assets/www.bilibili.tv/online.js"></script>
+<link rel="search" type="application/opensearchdescription+xml" href="/video-page/assets/static.hdslb.com/opensearch.xml" title="哔哩哔哩" />
+
+<link rel="stylesheet" href="/video-page/assets/static.hdslb.com/images/jquery-ui/smoothness/jquery-ui.css" type="text/css">
+<link href="/video-page/assets/static.hdslb.com/css/z.css" rel="stylesheet" type="text/css" />
+
+<style>
+.settings-page{width:950px;margin:20px auto 0;text-align:left;}
+.settings-page .h1{font-size:26px;color:#333;margin:10px 0 12px;}
+.settings-tip{color:#888;font-size:12px;margin:0 0 12px;}
+.settings-box{border:1px solid #ccc;background:#fafafa;padding:16px 18px;width:560px;}
+.settings-row{display:flex;align-items:center;min-height:34px;border-bottom:1px solid #e5e5e5;font-size:13px;}
+.settings-row label{width:110px;color:#444;}
+.settings-row select{height:24px;border:1px solid #aaa;background:#fff;color:#333;padding:0 4px;}
+.settings-note{color:#999;margin-left:10px;font-size:12px;}
+.settings-check{width:auto!important;color:#555!important;}
+.settings-check input{vertical-align:-2px;margin-right:4px;}
+.settings-actions{padding-top:14px;}
+.settings-actions button{height:26px;padding:0 16px;margin-right:8px;border:1px solid #9b9b9b;background:linear-gradient(#fff,#e8e8e8);color:#333;cursor:pointer;font-family:inherit;}
+.settings-actions button:hover{background:linear-gradient(#fff,#dedede);}
+#status{color:#d05a00;margin-left:4px;font-size:12px;}
+</style>
+</head>
+
+<body>
+<div class="float_window">
+	<div class="close"></div>
+	<div id="float_window">
+	</div>
+</div>
+<div class="z"><!--主区域-->
+	<div class="nums">
+    	<div id="zt-minibox"></div>
+		<ul id="nums"></ul>
+        <div class="bg_b"></div>
+    </div>
+    <div class="userbox">
+    	<div class="bg_l"></div>
+        <div class="bg" id="hl_status_l">
+        	
+        </div>
+        <div class="bg_r"></div>
+    </div>
+    <a href="http://www.bilibili.tv/ranking" target="_blank" class="rklist"></a>
+	<div class="num">
+    <div class="bg_l"></div>
+    <ul id="title_addnew_container">
+    	<li><a href="/">主页</a>
+    	<li><a href="/video/douga.html">动画</a><span class="addnew_1"></span>
+        	<ul>
+				<li><a href="/video/douga-mad-1.html">MAD·AMV</a></li>
+				<li><a href="/video/douga-mmd-1.html">MMD·3D</a></li>
+				<li><a href="/video/douga-kichiku-1.html">二次元鬼畜</a></li>
+				<li><a href="/video/douga-else-1.html">期刊·其他</a></li>
+			</ul>
+        </li>
+        <li><a href="/video/music.html">音乐</a><span class="addnew_3"></span>
+        	<ul>
+				<li><a href="/video/music-video-1.html">音乐视频</a></li>
+				<li><a href="/video/music-coordinate-1.html">三次元音乐</a></li>
+				<li><a href="/video/music-vocaloid-1.html">VOCALOID相关</a></li>
+				<li><a href="/video/music-Cover-1.html">翻唱</a></li>
+			</ul>
+        </li>
+        <li><a href="/video/game.html">游戏</a><span class="addnew_4"></span>
+        	<ul>
+				<li><a href="/video/game-video-1.html">游戏视频</a></li>
+				<li><a href="/video/game-ctary-1.html">游戏攻略·解说</a></li>
+				<li><a href="/video/game-mugen-1.html">Mugen</a></li>
+				<!--<li><a href="/video/game-flash-1.html">Flash游戏</a></li>-->
+			</ul>
+        </li>
+        <li class="f"><a href="/video/technology.html">科学技术</a><span class="addnew_36"></span>
+        	<ul>
+				<li style="margin-left:100px;"><a href="/video/tech-popular-science-1.html">科普知识</a></li>
+                <li><a href="/video/tech-geo-1.html">人文地理</a></li>
+				<li><a href="/video/tech-future-1.html">全球科技</a></li>
+				<li><a href="/video/tech-wild-1.html">野生技术</a></li>
+			</ul>
+        </li>
+        <li><a href="/video/ent.html">娱乐</a><span class="addnew_5"></span>
+        	<ul>
+				<li style="margin-left:170px;"><a href="/video/ent-life-1.html">生活娱乐</a></li>
+				<li><a href="/video/ent-dance-1.html">舞蹈</a></li>
+				<li><a href="/video/ent-Kichiku-1.html">三次元鬼畜</a></li>
+                <li><a id="navbtn_movie" href="/video/ent-telvisn-1.html">影视</a></li>
+			</ul>
+        </li>
+        <li><a href="/video/part.html">合集</a><span class="addnew_11"></span>
+        	<ul>
+            	<li style="margin-left:300px;"><a href="/video/part-twoelement-1.html">合集二次元</a></li>
+				<li><a href="/video/part-coordinate-1.html">合集三次元</a></li>
+            </ul>
+        </li>
+        <li class="f"><a href="/video/bangumi.html">新番连载</a><span class="addnew_13"></span>
+        	<ul>
+				<li style="margin-left:235px;"><a id="navbtn_bangumi" href="/video/bangumi-two-1.html">新番二次元</a></li>
+				<li><a href="/video/bangumi-three-1.html">新番三次元</a></li>
+				<li><a href="/list/b--a--t----d---1.html">新番Index</a></li>
+			</ul>
+        </li>
+        <li class="sp">
+        	<a href="/list/sp.html" class="zt">专题</a>
+        </li>
+	</ul>
+    </div>
+    <a href="/random" target="_blank" title="随便找个视频看看?" class="lsb"></a>
+    <div class="Search">
+    <form action="/search" name="formsearch" id="searchform" target="_blank">
+      <input name="keyword" type="text" style="border:none;" class="search-keyword ui-autocomplete-input" value="" id="search-keyword" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true" accesskey="s" autocomplete="off" x-webkit-speech="" x-webkit-grammar="builtin:translate">
+	  <input name="orderby" type="hidden" value="">
+      <button type="submit" name="formsubmit" class="search-submit png_bg"></button>
+    </form>
+  </div>
+	<div class="header"><!--头部-->
+		<a class="logo" href="/"></a>
+        <div class="ad_top"></div><!--头部广告位-->
+	</div>
+<script type="text/javascript">
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = '/2012/assets/interface.bilibili.tv/nav.js?v=13';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+</script>
+
+
+<div class="settings-page">
+<div class="h1">//播放设置</div>
+<p class="settings-tip">为了更还原，所以本页面不会显示在导航中，设置只保存在当前浏览器的说~</p>
+<form id="settingsForm" class="settings-box">
+  <div class="settings-row">
+    <label for="quality">视频画质</label>
+    <select id="quality">
+      <option value="80">1080P</option>
+      <option value="64">720P</option>
+      <option value="32">480P</option>
+      <option value="16">360P</option>
+    </select>
+    <span class="settings-note">默认 720P</span>
+  </div>
+  <div class="settings-row">
+    <label for="html5">HTML5模式</label>
+    <label class="settings-check"><input id="html5" type="checkbox"> 默认用HTML5播放器打开视频页</label>
+  </div>
+  <div class="settings-actions">
+    <button type="submit">保存设置</button>
+    <button type="button" id="reset">恢复默认</button>
+    <span id="status"></span>
+  </div>
+</form>
+</div>
+</div>
+<div class="footer"> 
+	<ul>
+    	<li><b>关于我们</b></li>
+        <li>微博:　<a href="http://weibo.com/bilibiliweb" target="_blank">新浪</a> | <a href="http://t.163.com/bilibiliweb" target="_blank">网易</a> | <a href="http://t.qq.com/bilibiliweb" target="_blank">腾讯</a> | <a href="http://t.sohu.com/p/u/123982432" target="_blank">搜狐</a></li>
+		<li><a href="/html/contact.html" target="_blank">联系我们</a> | <a href="/html/join.html" target="_blank">加入我们</a></li>
+        <li><a href="/html/aboutUs.html" target="_blank">关于哔哩哔哩动画</a></li>
+        <li><a href="/html/duty.html" target="_blank">资源免责申明</a></li>
+    </ul>
+	<ul>
+    	<li><b>获取帮助</b></li>
+		<li><a href="/video/av271/" target="_blank">弹幕测试</a> | <a href="/video/av120040/" target="_blank">高级弹幕</a></li>
+		<li><a href="/html/help.html" target="_blank">全站使用说明</a></li>
+		<li><a href="http://docs.bilibili.tv/wiki/FAQ" target="_blank">常见问题（FAQ）</a></li>
+		<li><a href="http://9ch.co/f61,1.html" target="_blank">建议和BUG汇报</a></li>
+    </ul>
+	<ul>
+    	<li><b>相关内容</b></li>
+        <li><a href="/lottery" target="_blank">活动专题页</a> | <a href="/rss.html" target="_blank">RSS订阅</a></li>
+        <li><a href="/html/cele.html" target="_blank">哔哩哔哩名人堂</a></li>
+        <li><a href="/html/bizhi.html" target="_blank">壁纸下载</a></li>
+		<li><a href="/html/userdel_list.html" target="_blank">补档认领处<var style="font-size:10px;-webkit-text-size-adjust: none; color:#F33;">(new)</var></a></li>
+    </ul>
+    <ul>
+    	<li><b>其他站点</b></li>
+		<li><a href="http://www.drawyoo.com/" target="_blank">画友 - beta</a></li>
+		<li><a href="http://9ch.co/forum.php" target="_blank">第九频道</a></li>
+    </ul>
+
+<!--<div class="powered">
+<span style="color: #f57;"> 声明:本站不提供任何视听上传服务，所有内容均来自正规视频站点所提供的公开引用资源</span><br><strong>帮助 Email&amp;QQ:help@bilibili.tv  |  版权问题处理Email&amp;QQ: 0w0@bilibili.tv</strong> | Copyright <a href="/" target="_blank">BiliBili.tv</a> All Rights Reserved 浙ICP备11055247号</div>-->
+
+<!--[if IE 6]>为了达到最佳浏览效果,请使用 <a href="http://www.apple.com.cn/safari/" target="_blank">Safari</a> <a href="http://www.operachina.com/" target="_blank">Opera</a> <a href="http://www.google.com/chrome/" target="_blank">Chrome</a> <a href="http://firefox.com.cn/" target="_blank">Firefox</a> <a href="http://windows.microsoft.com/ie9" target="_blank">IE9</a> 等浏览器<![endif]-->
+
+<div class="powered">
+ <div style="border-left: 1px solid #DDD;padding-left: 20px;"><span style="color: #f57;"> 声明:本站不提供任何视听上传服务，所有内容均来自正规视频站点所提供的公开引用资源</span><br><p>信息网络传播视听节目许可证：0905106 广播电视节目制作经营许可证：（沪）字第510号
+  <br>互联网出版许可证：新出网证(沪)字005号 增值电信业务经营许可证：沪B2-20040046<br>互联网ICP备案：沪ICP备09003930号
+</p></div></div>
+
+</div>
+
+
+<script>
+(function () {
+  function getCookie(name) {
+    var parts = document.cookie.split(';');
+    for (var i = 0; i < parts.length; i++) {
+      var part = parts[i].replace(/^\s+/, '');
+      var index = part.indexOf('=');
+      if (index >= 0 && part.slice(0, index) === name) {
+        return decodeURIComponent(part.slice(index + 1));
+      }
+    }
+    return '';
+  }
+  function setCookie(name, value) {
+    document.cookie = name + '=' + encodeURIComponent(value) + '; path=/; max-age=31536000; SameSite=Lax';
+  }
+  var form = document.getElementById('settingsForm');
+  var quality = document.getElementById('quality');
+  var html5 = document.getElementById('html5');
+  var status = document.getElementById('status');
+  var reset = document.getElementById('reset');
+  function load() {
+    quality.value = getCookie('BCS_PLAYER_QN') || '64';
+    html5.checked = getCookie('BCS_PLAYER_HTML5') === '1';
+  }
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    setCookie('BCS_PLAYER_QN', quality.value);
+    setCookie('BCS_PLAYER_HTML5', html5.checked ? '1' : '0');
+    status.textContent = '设置已保存';
+  });
+  reset.addEventListener('click', function () {
+    quality.value = '64';
+    html5.checked = false;
+    setCookie('BCS_PLAYER_QN', '64');
+    setCookie('BCS_PLAYER_HTML5', '0');
+    status.textContent = '已恢复默认';
+  });
+  load();
+})();
+</script>
+</body>
+</html>

@@ -47,6 +47,8 @@ npm start
 - 收藏夹：`/favlist`（登录后查看自己的收藏夹和收藏视频）
 - 播放历史：`/history`（登录后查看自己的播放记录）
 - 直接播放器：`/player`
+- HTML5播放器预览：`/player5?aid=385609`
+- 视频页切换HTML5：`/av385609?=html5`或`?html5=1`
 - 安卓客户端页：`/html/android.html`
 - iOS客户端页：`/html/ios.html`
 - 全站使用说明：`/html/help.html`
