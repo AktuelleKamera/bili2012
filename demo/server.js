@@ -15,9 +15,18 @@ const PORT = Number(process.env.PORT || 8080);
 const PUBLIC_ORIGIN = (process.env.PUBLIC_ORIGIN || 'http://localhost:' + PORT).replace(/\/+$/, '');
 const PUBLIC_HOST = process.env.PUBLIC_HOST || 'localhost';
 const DANMAKU_PORT = Number(process.env.DANMAKU_PORT || 88);
-const SESSION_FILE = path.join(DEMO, '.login-sessions.enc');
+const DATA_DIR = process.env.BILICLASSIC_DATA_DIR || path.join(
+  process.env.LOCALAPPDATA || DEMO,
+  'BiliClassic'
+);
+try {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+} catch (error) {}
+const SESSION_FILE = path.join(DATA_DIR, '.login-sessions.enc');
 const LEGACY_SESSION_FILE = path.join(DEMO, '.login-sessions.json');
-const SESSION_KEY_FILE = path.join(DEMO, '.session-key');
+const SESSION_KEY_FILE = path.join(DATA_DIR, '.session-key');
+const LEGACY_SESSION_ENC_FILE = path.join(DEMO, '.login-sessions.enc');
+const LEGACY_SESSION_KEY_FILE = path.join(DEMO, '.session-key');
 let sessionKey = null;
 
 const AID = '116895554473263';
@@ -131,10 +140,28 @@ function saveLoginSessions() {
       Buffer.concat([Buffer.from('BCS1'), iv, tag, encrypted]),
       { mode: 0o600 }
     );
-  } catch (error) {}
+  } catch (error) {
+    console.error('[session] save failed:', error.message);
+  }
+}
+
+function migrateSessionStore() {
+  try {
+    if (!fs.existsSync(SESSION_FILE) && !fs.existsSync(SESSION_KEY_FILE)) {
+      if (fs.existsSync(LEGACY_SESSION_ENC_FILE)) {
+        fs.copyFileSync(LEGACY_SESSION_ENC_FILE, SESSION_FILE);
+      }
+      if (fs.existsSync(LEGACY_SESSION_KEY_FILE)) {
+        fs.copyFileSync(LEGACY_SESSION_KEY_FILE, SESSION_KEY_FILE);
+      }
+    }
+  } catch (error) {
+    console.error('[session] migration failed:', error.message);
+  }
 }
 
 function loadLoginSessions() {
+  migrateSessionStore();
   try {
     const payload = fs.readFileSync(SESSION_FILE);
     if (payload.subarray(0, 4).toString('latin1') !== 'BCS1') return;
@@ -152,8 +179,13 @@ function loadLoginSessions() {
       if (!Array.isArray(row) || !row[0] || !row[1]) continue;
       if (Number(row[1].expires) > Date.now()) loginUserSessions.set(row[0], row[1]);
     }
+    console.log('[session] loaded ' + loginUserSessions.size + ' session(s)');
     return;
-  } catch (error) {}
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      console.error('[session] load failed:', error.message);
+    }
+  }
 
   try {
     const legacy = fs
@@ -538,6 +570,7 @@ const MIME = {
 };
 
 const videoUrlCache = new Map();
+const videoSourceCache = new Map();
 const videoInfoCache = new Map();
 const bangumiCidMap = new Map();
 const bangumiAidMap = new Map();
@@ -603,6 +636,81 @@ async function getVideoUrl(aid, cid, cookies, qn) {
   const url = payload.durl[0].url;
   videoUrlCache.set(key, { url, expires: Date.now() + 5 * 60 * 1000 });
   return url;
+}
+
+async function mediaReachable(url, aid, cookies) {
+  try {
+    const headers = Object.assign({}, BILI_HEADERS, cookies ? { Cookie: cookies } : {}, {
+      Referer: 'https://www.bilibili.com/video/av' + aid + '/',
+    });
+    const response = await fetch(url, {
+      method: 'HEAD',
+      headers,
+      signal: AbortSignal.timeout(5000),
+    });
+    return response.status >= 200 && response.status < 400;
+  } catch (error) {
+    return false;
+  }
+}
+
+async function getDashSource(aid, cid, cookies, qn) {
+  const headers = Object.assign({}, BILI_HEADERS, cookies ? { Cookie: cookies } : {}, {
+    Referer: 'https://www.bilibili.com/video/av' + aid + '/',
+    Origin: 'https://www.bilibili.com',
+  });
+  const api =
+    'https://api.bilibili.com/x/player/playurl?avid=' +
+    aid +
+    '&cid=' +
+    cid +
+    '&qn=' +
+    qn +
+    '&fnver=0&fourk=1&fnval=16&try_look=1';
+  const response = await fetch(api, { headers });
+  const json = await response.json();
+  const payload = json.data || json.result;
+  if (json.code !== 0 || !payload || !payload.dash || !payload.dash.video || !payload.dash.video.length) {
+    throw new Error('dash playurl failed: ' + JSON.stringify(json).slice(0, 300));
+  }
+  const videos = payload.dash.video
+    .filter((item) => item && item.baseUrl)
+    .sort((a, b) => Number(b.id || 0) - Number(a.id || 0));
+  const audio = (payload.dash.audio || [])
+    .filter((item) => item && item.baseUrl)
+    .sort((a, b) => Number(b.id || 0) - Number(a.id || 0))[0];
+  const video = videos.find((item) => Number(item.id) <= qn) || videos[videos.length - 1] || videos[0];
+  if (!video || !audio) {
+    throw new Error('dash streams missing');
+  }
+  return {
+    kind: 'dash',
+    videoUrl: video.baseUrl,
+    audioUrl: audio.baseUrl,
+    quality: Number(video.id || qn),
+  };
+}
+
+async function getVideoSource(aid, cid, cookies, qn) {
+  const authKey = cookies ? md5Hex(cookies).slice(0, 10) : 'anon';
+  const key = aid + ':' + cid + ':' + authKey + ':' + qn;
+  const cached = videoSourceCache.get(key);
+  if (cached && Date.now() < cached.expires) {
+    return cached.value;
+  }
+
+  try {
+    const url = await getVideoUrl(aid, cid, cookies, qn);
+    if (await mediaReachable(url, aid, cookies)) {
+      const value = { kind: 'durl', url };
+      videoSourceCache.set(key, { value, expires: Date.now() + 5 * 60 * 1000 });
+      return value;
+    }
+  } catch (error) {}
+
+  const dash = await getDashSource(aid, cid, cookies, qn);
+  videoSourceCache.set(key, { value: dash, expires: Date.now() + 5 * 60 * 1000 });
+  return dash;
 }
 
 async function getOnlineCount(aid, cid) {
@@ -971,6 +1079,9 @@ async function pipeFetch(target, req, res, extraHeaders, options) {
     if (value) {
       out[key.replace(/(^|-)([a-z])/g, (m, a, b) => a + b.toUpperCase())] = value;
     }
+  }
+  if (options && options.contentType) {
+    out['Content-Type'] = options.contentType;
   }
   res.writeHead(upstream.status, out);
   if (req.method === 'HEAD' || !upstream.body) {
@@ -3078,7 +3189,7 @@ const server = http.createServer(async (req, res) => {
           mid,
           uname,
           face,
-          expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+          expires: Date.now() + 30 * 24 * 60 * 60 * 1000,
         });
         saveLoginSessions();
         smsLoginSessions.delete(tel);
@@ -3086,7 +3197,7 @@ const server = http.createServer(async (req, res) => {
           res,
           200,
           { code: 0, login: true, uname, face, mid },
-          { 'Set-Cookie': 'BCSESS=' + sid + '; Path=/; HttpOnly; SameSite=Lax' }
+          { 'Set-Cookie': 'BCSESS=' + sid + '; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax' }
         );
       } catch (error) {
         return sendJson(res, 502, { code: -1, message: error.message });
@@ -3160,7 +3271,7 @@ const server = http.createServer(async (req, res) => {
             mid,
             uname,
             face,
-            expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+            expires: Date.now() + 30 * 24 * 60 * 60 * 1000,
           });
           saveLoginSessions();
           loginQrSessions.delete(key);
@@ -3168,7 +3279,7 @@ const server = http.createServer(async (req, res) => {
             res,
             200,
             { code: 0, login: true, uname, face, mid },
-            { 'Set-Cookie': 'BCSESS=' + sid + '; Path=/; HttpOnly; SameSite=Lax' }
+            { 'Set-Cookie': 'BCSESS=' + sid + '; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax' }
           );
         }
         return sendJson(res, 200, {
@@ -3193,6 +3304,7 @@ const server = http.createServer(async (req, res) => {
         const page = (view.pages || [])[0] || {};
         const cid = String(page.cid || view.cid || '');
         const qn = getPlayerQn(req);
+        const source = await getVideoSource(aid, cid, getRequestCookies(req), qn);
         let pic = view.pic || '';
         try {
           const picUrl = new URL(pic);
@@ -3206,9 +3318,12 @@ const server = http.createServer(async (req, res) => {
           duration: page.duration || view.duration || 0,
           pic,
           qn,
+          source: source.kind,
           stat: view.stat || {},
           owner: view.owner || {},
-          playUrl: cid ? '/media/video/' + aid + '/' + cid + '.mp4?qn=' + qn : '',
+          playUrl: source.kind === 'durl' ? '/media/video/' + aid + '/' + cid + '.mp4?qn=' + qn : '',
+          dashVideo: source.kind === 'dash' ? '/media/dash/' + aid + '/' + cid + '/video.mp4?qn=' + qn : '',
+          dashAudio: source.kind === 'dash' ? '/media/dash/' + aid + '/' + cid + '/audio.mp4?qn=' + qn : '',
           dmUrl: cid ? '/dm00/dm,' + cid : '',
         });
       } catch (error) {
@@ -3366,8 +3481,10 @@ const server = http.createServer(async (req, res) => {
           scores: 0,
         });
       }
-      if (sid) loginUserSessions.delete(sid);
-      saveLoginSessions();
+      if (sid && loginUserSessions.has(sid)) {
+        loginUserSessions.delete(sid);
+        saveLoginSessions();
+      }
       return sendJson(res, 200, { login: false });
     }
 
@@ -3441,6 +3558,8 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (
+      pathname === '/html/setting' ||
+      pathname === '/html/setting/' ||
       pathname === '/html/settings' ||
       pathname === '/html/settings/' ||
       pathname === '/html/settings.html'
@@ -3602,7 +3721,10 @@ const server = http.createServer(async (req, res) => {
         const cid = String(page.cid || info.view.cid);
         const aid = String(page.aid || info.view.aid);
         const html = renderPage(aid, cid, info, pageIndex + 1);
-        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+        res.writeHead(200, {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'no-store',
+        });
         return res.end(html);
       } catch (error) {
         res.writeHead(502, { 'Content-Type': 'text/plain; charset=utf-8' });
@@ -3628,12 +3750,28 @@ const server = http.createServer(async (req, res) => {
         const pages = info.view.pages || [];
         const page = pages[pageNo - 1] || pages[0] || {};
         const cid = String(page.cid || info.view.cid);
-        const html5Mode =
+        let html5Mode =
           search.indexOf('html5') >= 0 ||
           search.indexOf('=html5') >= 0 ||
           getPlayerHtml5(req);
+        if (!html5Mode) {
+          try {
+            const source = await getVideoSource(
+              aid,
+              cid,
+              getRequestCookies(req),
+              getPlayerQn(req)
+            );
+            if (source.kind === 'dash') {
+              html5Mode = true;
+            }
+          } catch (error) {}
+        }
         const html = renderPage(aid, cid, info, pageNo, html5Mode);
-        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+        res.writeHead(200, {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'no-store',
+        });
         return res.end(html);
       } catch (error) {
         res.writeHead(502, { 'Content-Type': 'text/plain; charset=utf-8' });
@@ -3651,6 +3789,33 @@ const server = http.createServer(async (req, res) => {
       if (cid === '1169623044') cid = '39824328708';
       const target = 'https://comment.bilibili.com/' + cid + '.xml';
       return await pipeFetch(target, req, res);
+    }
+
+    const dashMatch = pathname.match(/^\/media\/dash\/(\d+)\/(\d+)\/(video|audio)\.mp4$/);
+    if (dashMatch) {
+      try {
+        const source = await getVideoSource(
+          dashMatch[1],
+          dashMatch[2],
+          getRequestCookies(req),
+          getPlayerQn(req)
+        );
+        if (source.kind !== 'dash') {
+          res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+          return res.end('DASH source not found');
+        }
+        const isAudio = dashMatch[3] === 'audio';
+        return await pipeFetch(
+          isAudio ? source.audioUrl : source.videoUrl,
+          req,
+          res,
+          { Referer: 'https://www.bilibili.com/video/av' + dashMatch[1] + '/' },
+          { contentType: isAudio ? 'audio/mp4' : 'video/mp4' }
+        );
+      } catch (error) {
+        res.writeHead(502, { 'Content-Type': 'text/plain; charset=utf-8' });
+        return res.end('DASH proxy error: ' + error.message);
+      }
     }
 
     const videoMatch = pathname.match(/^\/media\/video\/(\d+)\/(\d+)\.mp4$/);
@@ -3939,8 +4104,19 @@ const server = http.createServer(async (req, res) => {
 loadLoginSessions();
 startDanmakuSocket();
 
+server.on('error', (error) => {
+  if (error.code === 'EADDRINUSE') {
+    console.error('[server] Port ' + PORT + ' is already in use.');
+    console.error('[server] If BiliClassic Web is already running, open ' + PUBLIC_ORIGIN + '/');
+    process.exit(1);
+  }
+  console.error('[server]', error.message);
+  process.exit(1);
+});
+
   server.listen(PORT, () => {
     console.log('BiliClassic Web');
     console.log('Open ' + PUBLIC_ORIGIN + '/ in a browser');
-  console.log('Video: https://www.bilibili.com/video/av' + AID + '/ (cid ' + CID + ')');
+    console.log('Settings: ' + PUBLIC_ORIGIN + '/html/setting');
+    console.log('Video: https://www.bilibili.com/video/av' + AID + '/ (cid ' + CID + ')');
 });

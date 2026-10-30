@@ -7,6 +7,7 @@
   var root = document.getElementById('player5');
   var stage = document.getElementById('stage');
   var video = document.getElementById('video');
+  var audio = document.getElementById('audio');
   var canvas = document.getElementById('danmaku');
   var ctx = canvas.getContext('2d');
   var playBtn = document.getElementById('playBtn');
@@ -46,6 +47,7 @@
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
   var info = null;
   var fallbackDuration = 0;
+  var usingDash = false;
 
   function pad(n) {
     return n < 10 ? '0' + n : String(n);
@@ -150,10 +152,23 @@
     if (data.pic && aid !== '385609') {
       video.poster = data.pic;
     }
-    if (data.playUrl) {
+    if (data.dashVideo && data.dashAudio) {
+      usingDash = true;
+      video.muted = true;
+      video.src = data.dashVideo;
+      audio.src = data.dashAudio;
+      video.load();
+      audio.load();
+    } else if (data.playUrl) {
+      usingDash = false;
+      audio.pause();
+      audio.removeAttribute('src');
+      audio.load();
+      video.muted = false;
       video.src = data.playUrl;
       video.load();
     }
+    setVolume(0.8);
     loadDanmaku(data.dmUrl);
   }
 
@@ -464,20 +479,52 @@
     }
   }
 
+  function syncAudio() {
+    if (!usingDash || audio.readyState < 1) {
+      return;
+    }
+    if (Math.abs(audio.currentTime - video.currentTime) > 0.35) {
+      audio.currentTime = video.currentTime;
+    }
+  }
+
   function togglePlay() {
     if (video.paused) {
       video.play().catch(function () {});
+      if (usingDash) {
+        syncAudio();
+        audio.play().catch(function () {});
+      }
     } else {
       video.pause();
+      if (usingDash) {
+        audio.pause();
+      }
     }
   }
 
   playBtn.addEventListener('click', togglePlay);
   bigPlay.addEventListener('click', togglePlay);
   video.addEventListener('click', togglePlay);
-  video.addEventListener('play', updatePlayState);
-  video.addEventListener('pause', updatePlayState);
-  video.addEventListener('ended', updatePlayState);
+  video.addEventListener('play', function () {
+    if (usingDash) {
+      syncAudio();
+      audio.play().catch(function () {});
+    }
+    updatePlayState();
+  });
+  video.addEventListener('pause', function () {
+    if (usingDash) {
+      audio.pause();
+    }
+    updatePlayState();
+  });
+  video.addEventListener('ended', function () {
+    if (usingDash) {
+      audio.pause();
+    }
+    updatePlayState();
+  });
   stage.addEventListener('mousemove', function () {
     stage.classList.remove('p5-hide-controls');
     if (!video.paused) {
@@ -498,7 +545,22 @@
     progressInner.style.width = percent + '%';
     progressThumb.style.left = percent + '%';
   }
-  video.addEventListener('timeupdate', updateTime);
+  video.addEventListener('timeupdate', function () {
+    updateTime();
+    if (usingDash && !audio.paused) {
+      syncAudio();
+    }
+  });
+  video.addEventListener('seeked', function () {
+    syncAudio();
+    resetDanmakuIndex(video.currentTime || 0);
+  });
+  audio.addEventListener('loadedmetadata', function () {
+    syncAudio();
+    if (!video.paused) {
+      audio.play().catch(function () {});
+    }
+  });
   video.addEventListener('loadedmetadata', function () {
     updateTime();
     resetDanmakuIndex(0);
@@ -528,21 +590,26 @@
   function setVolume(value) {
     value = Math.max(0, Math.min(1, value));
     video.volume = value;
-    video.muted = value === 0;
+    if (usingDash) {
+      video.muted = true;
+      audio.volume = value;
+      audio.muted = value === 0;
+    } else {
+      video.muted = value === 0;
+      audio.muted = true;
+    }
     volumeInner.style.width = (value * 100) + '%';
     volumeThumb.style.left = (value * 100) + '%';
-    stage.classList.toggle('p5-muted', value === 0 || video.muted);
+    stage.classList.toggle('p5-muted', value === 0);
   }
   muteBtn.addEventListener('click', function () {
-    if (video.muted || video.volume === 0) {
-      video.muted = false;
-      if (video.volume === 0) {
-        video.volume = 0.8;
-      }
+    var currentVolume = usingDash ? audio.volume : video.volume;
+    var muted = usingDash ? audio.muted : video.muted;
+    if (muted || currentVolume === 0) {
+      setVolume(currentVolume || 0.8);
     } else {
-      video.muted = true;
+      setVolume(0);
     }
-    setVolume(video.muted ? 0 : video.volume);
   });
   volume.addEventListener('mousedown', function (event) {
     event.preventDefault();
@@ -569,6 +636,7 @@
   });
   loopBtn.addEventListener('click', function () {
     video.loop = !video.loop;
+    audio.loop = video.loop;
     stage.classList.toggle('p5-loop-on', video.loop);
   });
   function relayoutPlayer() {

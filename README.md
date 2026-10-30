@@ -1,6 +1,6 @@
 ﻿# BiliClassic Web
 
-哔哩哔哩2012版播放页的本地恢复。页面和Flash播放器来自2012年Web Archive的存档，后端为Node.js。
+哔哩哔哩2012版播放页的本地恢复。页面和Flash播放器来自2012年Web Archive的存档，后端为Node.js。本项目为迫真Vibecoding项目。
 
 ## 如何运行本项目？
 
